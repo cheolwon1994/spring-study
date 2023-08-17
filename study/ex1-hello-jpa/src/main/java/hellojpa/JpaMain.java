@@ -1,7 +1,5 @@
 package hellojpa;
 
-import org.hibernate.sql.Update;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -16,26 +14,13 @@ public class JpaMain {
 
         EntityTransaction tx = em.getTransaction();
         tx.begin();
-        
-        try{
-//            INSERT
-//            Member member = new Member();
-//            member.setId(2L);
-//            member.setName("HelloB");
-//            em.persist(member);
 
-//            Update
-//            Member findMember = em.find(Member.class, 1L);
-//            findMember.setName("HelloJPA");
-            
-            List<Member> result = em.createQuery("select m from Member as m", Member.class)
-                    .setFirstResult(5)
-                    .setMaxResults(8)
-                    .getResultList();
-            
-            for(Member member : result){
-                System.out.println("member.getName() = " + member.getName());
-            }
+        try{
+            Member member = new Member(200L, "member200");
+            em.persist(member);
+            em.flush();     //flush해도 1차 캐시는 유지됨
+
+            System.out.println("==============");
 
             tx.commit();
         } catch (Exception e){
