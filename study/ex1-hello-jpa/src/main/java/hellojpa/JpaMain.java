@@ -4,7 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import java.util.List;
+import java.util.Set;
 
 public class JpaMain {
     public static void main(String[] args) {
@@ -15,15 +15,26 @@ public class JpaMain {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
 
-        try{
-            Member member = new Member(200L, "member200");
-            em.persist(member);
-            em.flush();     //flush해도 1차 캐시는 유지됨
+        try {
+            Member member1 = new Member();
+            member1.setUsername("A");
+            Member member2 = new Member();
+            member2.setUsername("B");
+            Member member3 = new Member();
+            member3.setUsername("C");
 
-            System.out.println("==============");
+            System.out.println("=====================");
 
+            em.persist(member1);
+            em.persist(member2);
+            em.persist(member3);
+
+            System.out.println("member1.id = " + member1.getId());
+            System.out.println("member2.id = " + member2.getId());
+            System.out.println("member3.id = " + member3.getId());
+            System.out.println("=====================");
             tx.commit();
-        } catch (Exception e){
+        } catch (Exception e) {
             tx.rollback();
         } finally {
             em.close();
